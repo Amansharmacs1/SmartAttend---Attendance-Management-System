@@ -18,118 +18,12 @@ function getPastWeekdays(count, startFromDate = new Date(2026, 5, 17)) {
   return dates;
 }
 
-// Generate seeded logs for DSA (11 attended out of 13)
-const dsaDates = getPastWeekdays(13);
-const dsaLogs = dsaDates.map((date, idx) => {
-  let status = 'present';
-  let notes = 'Attended regular lecture';
-  if (idx === 4) {
-    status = 'duty_leave';
-    notes = 'Attended Inter-College Tech Fest';
-  } else if (idx === 2) {
-    status = 'absent';
-    notes = 'Missed class (Sick leave)';
-  } else if (idx === 8) {
-    status = 'absent';
-    notes = 'Missed class due to traffic delay';
-  }
-  return {
-    id: `dsa-log-${idx}`,
-    date,
-    status,
-    notes
-  };
-});
-
-// Generate seeded logs for FEFL (10 attended out of 14)
-const feflDates = getPastWeekdays(14);
-const feflLogs = feflDates.map((date, idx) => {
-  let status = 'present';
-  let notes = 'Attended regular lecture';
-  if (idx === 5) {
-    status = 'duty_leave';
-    notes = 'On Duty (Sports Selection)';
-  } else if (idx === 1) {
-    status = 'absent';
-    notes = 'Missed class (Rain/Weather)';
-  } else if (idx === 6) {
-    status = 'absent';
-    notes = 'Missed class (Overslept)';
-  } else if (idx === 10) {
-    status = 'absent';
-    notes = 'Missed class (Medical checkup)';
-  } else if (idx === 13) {
-    status = 'absent';
-    notes = 'Missed class';
-  }
-  return {
-    id: `fefl-log-${idx}`,
-    date,
-    status,
-    notes
-  };
-});
-
-const initialSubjects = [
-  {
-    name: "DSA",
-    minAttendance: 75,
-    attendedClasses: 11, // 10 present + 1 duty_leave
-    totalClasses: 13,
-    color: "#3b82f6",
-    id: "06e21150-20a2-4296-a7fe-6f9632f4c100",
-    createdAt: 1781687687967,
-    updatedAt: 1781687749666,
-    logs: dsaLogs
-  },
-  {
-    name: "FEFL",
-    minAttendance: 75,
-    attendedClasses: 10, // 9 present + 1 duty_leave
-    totalClasses: 14,
-    color: "#ef4444",
-    id: "9ee763b5-5746-4314-ac9f-5afb88e8ec51",
-    createdAt: 1781687699800,
-    updatedAt: 1781687778632,
-    logs: feflLogs
-  }
-];
-
-const initialSchedule = {
-  Monday: [
-    { id: 'sched-1', subjectId: '06e21150-20a2-4296-a7fe-6f9632f4c100', time: '10:00' }, // DSA
-    { id: 'sched-2', subjectId: '9ee763b5-5746-4314-ac9f-5afb88e8ec51', time: '13:00' }  // FEFL
-  ],
-  Tuesday: [
-    { id: 'sched-3', subjectId: '9ee763b5-5746-4314-ac9f-5afb88e8ec51', time: '11:00' }  // FEFL
-  ],
-  Wednesday: [
-    { id: 'sched-4', subjectId: '06e21150-20a2-4296-a7fe-6f9632f4c100', time: '10:00' }, // DSA
-    { id: 'sched-5', subjectId: '9ee763b5-5746-4314-ac9f-5afb88e8ec51', time: '14:00' }  // FEFL
-  ],
-  Thursday: [
-    { id: 'sched-6', subjectId: '06e21150-20a2-4296-a7fe-6f9632f4c100', time: '11:00' }  // DSA
-  ],
-  Friday: [
-    { id: 'sched-7', subjectId: '06e21150-20a2-4296-a7fe-6f9632f4c100', time: '09:00' }, // DSA
-    { id: 'sched-8', subjectId: '9ee763b5-5746-4314-ac9f-5afb88e8ec51', time: '12:00' }  // FEFL
-  ],
-  Saturday: [],
-  Sunday: []
-};
-
-const initialProfile = {
-  name: "Aman Sharma",
-  college: "Indian Institute of Technology",
-  semester: "Semester 4"
-};
-
 export const useStore = create(
   persist(
     (set) => ({
-      subjects: initialSubjects,
-      schedule: initialSchedule,
-      profile: initialProfile,
+      subjects: [],
+      schedule: { Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [], Saturday: [], Sunday: [] },
+      profile: { name: '', college: '', semester: '' },
       theme: 'system',
       
       addSubject: (subjectData) => set((state) => {
