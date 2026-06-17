@@ -7,7 +7,7 @@ import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Modal } from '../components/ui/Modal';
 import { Label } from '../components/ui/Input';
-import { calculatePercentage, getStatusText } from '../utils/calculations';
+import { calculatePercentage, getStatusText, getLocalDateString } from '../utils/calculations';
 import { motion } from 'framer-motion';
 import { 
   Plus, Search, PieChart as PieIcon, BookOpen, AlertTriangle, 
@@ -53,7 +53,7 @@ export function Dashboard() {
   const todayDayName = DAYS_OF_WEEK[new Date().getDay()];
   const todayClasses = schedule[todayDayName] || [];
   
-  const todayDateStr = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD format
+  const todayDateStr = getLocalDateString(); // YYYY-MM-DD format
 
   const handleProfileSave = (e) => {
     e.preventDefault();
@@ -82,7 +82,7 @@ export function Dashboard() {
     for (let i = daysToTrack - 1; i >= 0; i--) {
       const d = new Date();
       d.setDate(d.getDate() - i);
-      dates.push(d.toLocaleDateString('en-CA'));
+      dates.push(getLocalDateString(d));
     }
     
     dates.forEach(date => {

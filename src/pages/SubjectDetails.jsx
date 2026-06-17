@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
-import { calculatePercentage, calculateSafeBunks, calculateClassesNeeded, getStatusText } from '../utils/calculations';
+import { calculatePercentage, calculateSafeBunks, calculateClassesNeeded, getStatusText, getLocalDateString } from '../utils/calculations';
 import { Button } from '../components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Progress } from '../components/ui/Progress';
@@ -30,7 +30,7 @@ export function SubjectDetails() {
   const [editMin, setEditMin] = useState('');
 
   // Log custom class form states
-  const [logDate, setLogDate] = useState(new Date().toLocaleDateString('en-CA'));
+  const [logDate, setLogDate] = useState(getLocalDateString());
   const [logStatus, setLogStatus] = useState('present');
   const [logNotes, setLogNotes] = useState('');
 

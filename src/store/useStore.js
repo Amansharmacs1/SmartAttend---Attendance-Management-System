@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { getLocalDateString } from '../utils/calculations';
 
 // Helper to generate weekday dates backwards from June 17, 2026
 function getPastWeekdays(count, startFromDate = new Date(2026, 5, 17)) {
@@ -70,7 +71,7 @@ export const useStore = create(
       })),
       
       markPresent: (id, customDate) => set((state) => {
-        const date = customDate || new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD in local time
+        const date = customDate || getLocalDateString(); // YYYY-MM-DD in local time
         const newLog = {
           id: crypto.randomUUID(),
           date,
@@ -95,7 +96,7 @@ export const useStore = create(
       }),
       
       markAbsent: (id, customDate) => set((state) => {
-        const date = customDate || new Date().toLocaleDateString('en-CA');
+        const date = customDate || getLocalDateString();
         const newLog = {
           id: crypto.randomUUID(),
           date,
@@ -120,7 +121,7 @@ export const useStore = create(
       }),
 
       markDutyLeave: (id, customDate) => set((state) => {
-        const date = customDate || new Date().toLocaleDateString('en-CA');
+        const date = customDate || getLocalDateString();
         const newLog = {
           id: crypto.randomUUID(),
           date,
