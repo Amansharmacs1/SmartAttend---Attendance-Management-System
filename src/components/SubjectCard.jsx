@@ -4,12 +4,12 @@ import { Progress } from './ui/Progress';
 import { Badge } from './ui/Badge';
 import { Button } from './ui/Button';
 import { calculatePercentage, getStatusText, getEmoji } from '../utils/calculations';
-import { Check, X, ChevronRight } from 'lucide-react';
+import { Check, X, ChevronRight, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 
 export function SubjectCard({ subject }) {
-  const { markPresent, markAbsent } = useStore();
+  const { markPresent, markAbsent, markDutyLeave } = useStore();
   const percentage = calculatePercentage(subject.attendedClasses, subject.totalClasses);
   const status = getStatusText(percentage, subject.minAttendance);
   const emoji = getEmoji(percentage);
@@ -67,20 +67,29 @@ export function SubjectCard({ subject }) {
 
           <Progress value={percentage} indicatorColor={progressColor} />
 
-          <div className="grid grid-cols-2 gap-3 pt-2">
+          <div className="flex flex-col gap-2 pt-2">
+            <div className="grid grid-cols-2 gap-2">
+              <Button 
+                variant="success" 
+                className="w-full flex items-center justify-center gap-2 rounded-xl py-5"
+                onClick={() => markPresent(subject.id)}
+              >
+                <Check className="h-4 w-4" /> Present
+              </Button>
+              <Button 
+                variant="destructive" 
+                className="w-full flex items-center justify-center gap-2 rounded-xl py-5"
+                onClick={() => markAbsent(subject.id)}
+              >
+                <X className="h-4 w-4" /> Absent
+              </Button>
+            </div>
             <Button 
-              variant="success" 
-              className="w-full flex items-center justify-center gap-2 rounded-xl py-6"
-              onClick={() => markPresent(subject.id)}
+              variant="outline" 
+              className="w-full flex items-center justify-center gap-2 rounded-xl py-3 border-violet-200 hover:border-violet-300 dark:border-violet-850/50 text-violet-600 dark:text-violet-400 dark:hover:bg-violet-950/20"
+              onClick={() => markDutyLeave(subject.id)}
             >
-              <Check className="h-5 w-5" /> Present
-            </Button>
-            <Button 
-              variant="destructive" 
-              className="w-full flex items-center justify-center gap-2 rounded-xl py-6"
-              onClick={() => markAbsent(subject.id)}
-            >
-              <X className="h-5 w-5" /> Absent
+              <Award className="h-4 w-4" /> Duty Leave
             </Button>
           </div>
         </div>
