@@ -4,6 +4,7 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/SmartAttend---Attendance-Management-System/',
   plugins: [react()],
   resolve: {
     alias: {
@@ -11,3 +12,4 @@ export default defineConfig({
     },
   },
 })
+

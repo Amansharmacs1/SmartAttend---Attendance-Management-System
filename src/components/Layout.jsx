@@ -28,7 +28,7 @@ export function Layout() {
       <nav className="sticky top-0 z-40 w-full backdrop-blur-xl bg-white/70 dark:bg-slate-950/70 border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <img src="/favicon.svg" alt="SmartAttend Logo" className="w-8 h-8 drop-shadow-md" />
+            <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="SmartAttend Logo" className="w-8 h-8 drop-shadow-md" />
             <span className="font-bold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400">
               SmartAttend
             </span>
