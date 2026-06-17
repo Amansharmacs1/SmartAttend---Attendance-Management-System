@@ -129,7 +129,7 @@ export function Settings() {
                   id="profName"
                   value={profName} 
                   onChange={e => setProfName(e.target.value)} 
-                  placeholder="e.g. Aman Sharma"
+                  placeholder="e.g. Ronak Sharma"
                   required
                 />
               </div>

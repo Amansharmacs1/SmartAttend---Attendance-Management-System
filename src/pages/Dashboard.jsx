@@ -506,7 +506,7 @@ export function Dashboard() {
             <Label htmlFor="profName">Student Name</Label>
             <Input
               id="profName"
-              placeholder="e.g. Aman Sharma"
+              placeholder="e.g. Ronak Sharma"
               value={profName}
               onChange={(e) => setProfName(e.target.value)}
               required
