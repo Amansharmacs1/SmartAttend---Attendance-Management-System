@@ -64,8 +64,8 @@ export function Calendar() {
   };
 
   const renderHeader = () => (
-    <div className="flex justify-between items-center mb-6">
-      <div className="flex items-center gap-4">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div className="flex items-center justify-between w-full sm:w-auto gap-4">
         <div className="bg-slate-100 dark:bg-slate-800 rounded-xl p-1 flex">
           <Button variant="ghost" size="icon" onClick={prevMonth} className="h-8 w-8 rounded-lg">
             <ChevronLeft className="w-5 h-5" />
@@ -74,10 +74,10 @@ export function Calendar() {
             <ChevronRight className="w-5 h-5" />
           </Button>
         </div>
-        <h2 className="text-xl font-bold w-40">{format(currentDate, 'MMMM yyyy')}</h2>
+        <h2 className="text-lg sm:text-xl font-bold w-32 sm:w-40 text-center sm:text-left">{format(currentDate, 'MMMM yyyy')}</h2>
         <Button variant="outline" size="sm" onClick={goToToday} className="h-8 text-xs">Today</Button>
       </div>
-      <Button variant="gradient" size="sm" onClick={() => openAddAttendanceForDate(new Date())}>
+      <Button variant="gradient" size="sm" className="w-full sm:w-auto" onClick={() => openAddAttendanceForDate(new Date())}>
         <Plus className="w-4 h-4 mr-1"/> Add Attendance
       </Button>
     </div>
@@ -88,7 +88,7 @@ export function Calendar() {
     const startDate = startOfWeek(currentDate);
     for (let i = 0; i < 7; i++) {
       days.push(
-        <div key={i} className="text-center font-semibold text-xs text-slate-500 py-2 uppercase tracking-wider">
+        <div key={i} className="text-center font-semibold text-[10px] sm:text-xs text-slate-500 py-1 sm:py-2 uppercase tracking-wider">
           {format(addDays(startDate, i), 'EEE')}
         </div>
       );
@@ -130,26 +130,26 @@ export function Calendar() {
           <div
             key={day}
             onClick={() => onDateClick(cloneDay)}
-            className={`min-h-[100px] border border-slate-100 dark:border-slate-800 p-2 cursor-pointer transition-all hover:border-violet-300 dark:hover:border-violet-700
+            className={`min-h-[70px] sm:min-h-[100px] border border-slate-100 dark:border-slate-800 p-1 sm:p-2 cursor-pointer transition-all hover:border-violet-300 dark:hover:border-violet-700
               ${!isSameMonth(day, monthStart) ? 'opacity-40 bg-slate-50 dark:bg-slate-900' : bgClass}
               ${isToday(day) ? 'ring-2 ring-violet-500 ring-inset' : ''}
             `}
           >
             <div className="flex justify-between items-start mb-1">
-              <span className={`text-sm font-bold w-6 h-6 flex items-center justify-center rounded-full ${isToday(day) ? 'bg-violet-500 text-white' : 'text-slate-700 dark:text-slate-300'}`}>
+              <span className={`text-xs sm:text-sm font-bold w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full ${isToday(day) ? 'bg-violet-500 text-white' : 'text-slate-700 dark:text-slate-300'}`}>
                 {formattedDate}
               </span>
             </div>
             
             {dayLogs.length > 0 ? (
               <div className="flex flex-col gap-1 mt-2">
-                {present > 0 && <div className="text-[10px] font-medium text-emerald-600 bg-emerald-100 dark:bg-emerald-900/40 px-1.5 rounded truncate">P: {present}</div>}
-                {absent > 0 && <div className="text-[10px] font-medium text-red-600 bg-red-100 dark:bg-red-900/40 px-1.5 rounded truncate">A: {absent}</div>}
-                {duty > 0 && <div className="text-[10px] font-medium text-violet-600 bg-violet-100 dark:bg-violet-900/40 px-1.5 rounded truncate">OD: {duty}</div>}
-                {cancelled > 0 && <div className="text-[10px] font-medium text-orange-600 bg-orange-100 dark:bg-orange-900/40 px-1.5 rounded truncate">C: {cancelled}</div>}
+                {present > 0 && <div className="text-[10px] font-medium text-emerald-600 bg-emerald-100 dark:bg-emerald-900/40 px-1 sm:px-1.5 rounded truncate"><span className="hidden sm:inline">P: </span> {present}</div>}
+                {absent > 0 && <div className="text-[10px] font-medium text-red-600 bg-red-100 dark:bg-red-900/40 px-1 sm:px-1.5 rounded truncate"><span className="hidden sm:inline">A: </span> {absent}</div>}
+                {duty > 0 && <div className="text-[10px] font-medium text-violet-600 bg-violet-100 dark:bg-violet-900/40 px-1 sm:px-1.5 rounded truncate"><span className="hidden sm:inline">OD: </span> {duty}</div>}
+                {cancelled > 0 && <div className="text-[10px] font-medium text-orange-600 bg-orange-100 dark:bg-orange-900/40 px-1 sm:px-1.5 rounded truncate"><span className="hidden sm:inline">C: </span> {cancelled}</div>}
               </div>
             ) : (
-              <div className="mt-4 text-[10px] text-slate-400 text-center opacity-0 group-hover:opacity-100">No records</div>
+              <div className="mt-4 text-[10px] text-slate-400 text-center hidden sm:block opacity-0 group-hover:opacity-100">No records</div>
             )}
           </div>
         );
@@ -221,7 +221,7 @@ export function Calendar() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><CalendarIcon className="text-violet-500"/> Attendance Calendar</h1>
         </div>
         
-        <div className="flex gap-2 w-full md:w-auto">
+        <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
           <select 
             className="h-9 rounded-lg border border-slate-200 bg-white px-3 text-xs dark:border-slate-800 dark:bg-slate-950"
             value={filterSubject}
