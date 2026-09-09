@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
+import { useNavigate } from 'react-router-dom';
 import { SubjectCard } from '../components/SubjectCard';
 import { EmptyState } from '../components/EmptyState';
 import { AddSubjectModal } from '../components/AddSubjectModal';
@@ -19,6 +20,8 @@ import {
 } from 'recharts';
 
 export function Dashboard() {
+  const navigate = useNavigate();
+  const notificationsPermission = useStore(state => state.notificationsPermission);
   const subjects = useStore((state) => state.subjects);
   const schedule = useStore((state) => state.schedule) || {};
   const profile = useStore((state) => state.profile) || { name: '', college: '', semester: '' };
@@ -221,6 +224,26 @@ export function Dashboard() {
             </div>
             <div className="text-4xl font-bold text-red-600 dark:text-red-400">{criticalCount}</div>
           </motion.div>
+        
+          {overallPercentage < 75 && totalClasses > 0 && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="col-span-2 md:col-span-4 p-4 rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 shadow-sm flex items-center gap-3 text-red-600 dark:text-red-400">
+              <AlertTriangle className="w-5 h-5" />
+              <span className="text-sm font-medium">Warning: Your overall attendance is below 75%. Check the Calculator to see how many classes you need.</span>
+              <Button size="sm" variant="outline" className="text-xs ml-auto" onClick={() => navigate('/calculator')}>Open Calculator</Button>
+            </motion.div>
+          )}
+
+
+          {notificationsPermission !== 'granted' && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="col-span-2 md:col-span-4 p-4 rounded-2xl bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/20 shadow-sm flex items-center justify-between">
+              <div className="flex items-center gap-3 text-orange-600 dark:text-orange-400">
+                <AlertTriangle className="w-5 h-5" />
+                <span className="text-sm font-medium">Browser notifications are disabled. Enable them in Timetable to get class reminders.</span>
+              </div>
+              <Button size="sm" variant="outline" className="text-xs" onClick={() => navigate('/timetable')}>Go to Timetable</Button>
+            </motion.div>
+          )}
+
         </div>
 
       </div>
@@ -237,7 +260,7 @@ export function Dashboard() {
             <Calendar className="w-5 h-5 text-violet-500" />
             <h2 className="font-bold text-lg">Today's Schedule ({todayDayName})</h2>
           </div>
-          <span className="text-xs text-slate-500 font-medium">Quick Mark Attendance</span>
+          <Button variant="ghost" size="sm" onClick={() => navigate('/calendar')} className="text-xs text-violet-600 dark:text-violet-400">View Calendar →</Button>
         </div>
 
         {todayClasses.length === 0 ? (
@@ -259,7 +282,7 @@ export function Dashboard() {
                     <div>
                       <div className="font-bold text-sm">{sub.name}</div>
                       <div className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
-                        <Clock className="w-3 h-3" /> {item.time}
+                        <Clock className="w-3 h-3" /> {item.startTime}
                       </div>
                     </div>
                   </div>

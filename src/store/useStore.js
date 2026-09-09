@@ -26,6 +26,8 @@ export const useStore = create(
       schedule: { Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [], Saturday: [], Sunday: [] },
       profile: { name: '', college: '', semester: '' },
       theme: 'system',
+      notificationsPermission: 'default',
+      setNotificationsPermission: (status) => set({ notificationsPermission: status }),
       
       addSubject: (subjectData) => set((state) => {
         const id = crypto.randomUUID();
@@ -201,6 +203,81 @@ export const useStore = create(
         })
       })),
       
+
+      // Timetable Management
+      addTimetableEntry: (entry) => set((state) => {
+        const id = crypto.randomUUID();
+        const day = entry.dayOfWeek;
+        const newEntry = {
+          ...entry,
+          id,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          enabled: true
+        };
+        const daySchedule = [...(state.schedule[day] || []), newEntry];
+        daySchedule.sort((a, b) => a.startTime.localeCompare(b.startTime));
+        
+        return {
+          schedule: {
+            ...state.schedule,
+            [day]: daySchedule
+          }
+        };
+      }),
+
+      updateTimetableEntry: (id, updates) => set((state) => {
+        let updatedSchedule = { ...state.schedule };
+        let foundDay = null;
+        let entryToMove = null;
+
+        for (const day of Object.keys(updatedSchedule)) {
+          const entryIdx = updatedSchedule[day].findIndex(e => e.id === id);
+          if (entryIdx !== -1) {
+            foundDay = day;
+            entryToMove = { ...updatedSchedule[day][entryIdx], ...updates, updatedAt: Date.now() };
+            updatedSchedule[day].splice(entryIdx, 1);
+            break;
+          }
+        }
+
+        if (entryToMove) {
+          const targetDay = entryToMove.dayOfWeek || foundDay;
+          updatedSchedule[targetDay] = [...(updatedSchedule[targetDay] || []), entryToMove];
+          updatedSchedule[targetDay].sort((a, b) => a.startTime.localeCompare(b.startTime));
+        }
+
+        return { schedule: updatedSchedule };
+      }),
+
+      deleteTimetableEntry: (id) => set((state) => {
+        let updatedSchedule = { ...state.schedule };
+        for (const day of Object.keys(updatedSchedule)) {
+          updatedSchedule[day] = updatedSchedule[day].filter(e => e.id !== id);
+        }
+        return { schedule: updatedSchedule };
+      }),
+
+      toggleTimetableEntry: (id) => set((state) => {
+        let updatedSchedule = { ...state.schedule };
+        for (const day of Object.keys(updatedSchedule)) {
+          updatedSchedule[day] = updatedSchedule[day].map(e => 
+            e.id === id ? { ...e, enabled: !e.enabled, updatedAt: Date.now() } : e
+          );
+        }
+        return { schedule: updatedSchedule };
+      }),
+
+      toggleNotification: (id) => set((state) => {
+        let updatedSchedule = { ...state.schedule };
+        for (const day of Object.keys(updatedSchedule)) {
+          updatedSchedule[day] = updatedSchedule[day].map(e => 
+            e.id === id ? { ...e, notificationsEnabled: !e.notificationsEnabled, updatedAt: Date.now() } : e
+          );
+        }
+        return { schedule: updatedSchedule };
+      }),
+
       setTheme: (theme) => set({ theme }),
       
       importData: (data) => set((state) => {
